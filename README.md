@@ -1,4 +1,4 @@
-# Gerenciador do consumo de energia residencial.
+# Gerenciador do consumo de energia residencial
 
 Projeto autoral em desenvolvimento.
 
