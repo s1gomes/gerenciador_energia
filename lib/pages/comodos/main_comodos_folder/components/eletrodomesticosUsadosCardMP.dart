@@ -11,7 +11,6 @@ class EletrodomesticosMaisUsadosCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        
         Container(
           width: constraints.maxWidth * 0.98,
           height: constraints.maxHeight * 0.07,

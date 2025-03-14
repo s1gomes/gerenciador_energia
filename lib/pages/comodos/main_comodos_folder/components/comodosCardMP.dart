@@ -13,28 +13,27 @@ class ComodosCardMP extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GerenciarComodoBloc, GerenciarComodoBlocStates>(
-      builder: (context, state) {
-        return Container(
-          width: constraints.maxWidth * 0.98,
-          height: constraints.maxHeight * 0.07,
-          child: Card(
-              elevation: 3,
-              child: TextCardContainer(
-                titleController: "Cômodo",
-                constraints: constraints,
-                functionOnpressed: () {
-                  //  context.read<GerenciarComodoBloc>().add(UpdateComodo());
-                   context.read<GerenciarComodoBloc>().add(AlterStateUpdated());
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const CadastroComodosPage()),
-                  );
-                },
-                iconData: Icons.add,
-              )),
-        );
-      }
-    );
+    return BlocBuilder<GerenciarComodoBloc, GerenciarComodoState>(
+        builder: (context, state) {
+      return Container(
+        width: constraints.maxWidth * 0.98,
+        height: constraints.maxHeight * 0.07,
+        child: Card(
+            elevation: 3,
+            child: TextCardContainer(
+              titleController: "Cômodo",
+              constraints: constraints,
+              functionOnpressed: () {
+                context.read<GerenciarComodoBloc>().add(AlterStateUpdated());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CadastroComodosPage()),
+                );
+              },
+              iconData: Icons.add,
+            )),
+      );
+    });
   }
 }

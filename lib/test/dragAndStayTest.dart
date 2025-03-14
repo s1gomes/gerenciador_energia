@@ -38,11 +38,11 @@ class _DragStayTestState extends State<DragStayTest> {
               //   ),
               // ],
               // os dados que vão ser levados
-              data: Container(
-                height: 50,
-                width: 50,
-                color: Color.fromARGB(255, 152, 68, 68),
-              ),
+              // data: Container(
+              //   height: 50,
+              //   width: 50,
+              //   color:const Color.fromARGB(255, 152, 68, 68),
+              // ),
 
               // o que aparece sendo arrastado
               feedback: Container(

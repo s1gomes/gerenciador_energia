@@ -1,24 +1,20 @@
 import 'package:equatable/equatable.dart';
 
-class ComodoEvents extends Equatable {
+sealed class ComodoEvents extends Equatable {
+  const ComodoEvents();
   @override
   List<Object?> get props => [];
 }
 
-
 class GetComodos extends ComodoEvents {
-   @override
-  List<Object?> get props => [];
+  const GetComodos();
 }
 // receber url das imagens
 
-
 class ImagemSelecionadaEvent extends ComodoEvents {
-  @override
-  List<Object?> get props => [];
+  const ImagemSelecionadaEvent();
 }
 
 class EditarImagemSelecionadaEvent extends ComodoEvents {
-  @override
-  List<Object?> get props => [];
+  const EditarImagemSelecionadaEvent();
 }

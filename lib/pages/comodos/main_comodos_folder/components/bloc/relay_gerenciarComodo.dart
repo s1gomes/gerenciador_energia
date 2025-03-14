@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gerenciamento_energia_bloc/pages/bloc_gerenciarComodo/gerenciar_comodo_bloc.dart';
 import 'package:gerenciamento_energia_bloc/pages/bloc_gerenciarComodo/gerenciar_comodo_state.dart';
-import 'package:gerenciamento_energia_bloc/shared/widgets/adaptatives/adaptativeTextField.dart';
+import 'package:gerenciamento_energia_bloc/shared/widgets/adaptatives/AdaptativeTextField.dart';
 import 'package:gerenciamento_energia_bloc/shared/widgets/compartmentalization/containers/imageContainers/CadastrarImagemCotainer.dart';
 
 enum ImagensComodos {
@@ -41,96 +41,111 @@ class _RelayGerenciarComodosState extends State<RelayGerenciarComodos> {
   ImagensComodos? selectedImage = ImagensComodos.plantaCasa;
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      // "subir" esse widget para que o botão de concluir consiga pegar a informação correta
-      // na forma atual, o title controller vai vazio levando o imagewidget a cair no 'onError' e mostrar a imagem planta casa
-      builder: (context, constraints) {
-        return BlocBuilder<GerenciarComodoBloc, GerenciarComodoBlocStates>(
-          builder: (context, state) {
-            return state.statusGerenciarComodos.isInitial
-                ? Card(
-                    color: const Color.fromARGB(255, 235, 245, 235),
-                    elevation: 2,
-                    child: CadastrarImageContainer(
-                      // constraints: constraints,
-                      imageController: widget.selectedImageUrl,
-                    ))
-                : state.statusGerenciarComodos.isUpdated
-                    ? Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          // futura implementação: listar todos os eletrodomésticos em uma categoria
-                          adaptativeTextField(
-                              keyboardType: TextInputType.text,
-                              controller: widget.nomeComodo,
-                              label: 'Nome: '),
-        
-                          // implementar drop down com imagens fixas de eletrodomésticos
-                          SizedBox(height: constraints.maxHeight * 0.02),
-                          Row(
-                            children: [
-                              Container(
-                                height: 100,
-                                width: constraints.maxWidth * 0.65,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 20),
-                                  child: DropdownMenu(
-                                      width: constraints.maxWidth * 0.6,
-                                      initialSelection: ImagensComodos.plantaCasa,
-                                      controller: widget.imageComodo,
-                                      requestFocusOnTap: true,
-                                      label: const Text('Cômodo'),
-                                      onSelected: (ImagensComodos? url) {
-                                        setState(() {
-                                          selectedImage = url;
-                                        });
-                                      },
-                                      dropdownMenuEntries: ImagensComodos.values
-                                          .map<DropdownMenuEntry<ImagensComodos>>(
-                                              (ImagensComodos url) {
-                                        return DropdownMenuEntry<ImagensComodos>(
-                                          value: url,
-                                          label: url.label,
-                                          enabled: url.label != 'Selecionar imagem',
-                                        );
-                                      }).toList()),
-                                ),
-                              ),
-                              Container(
-                                  height: 100,
-                                  width: 100,
-                                  margin: const EdgeInsets.only(right: 10),
-                                  decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Colors.grey, width: 1),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: widget.imageComodo.text.isEmpty
-                                      ? const Text('Informe a Url')
-                                      : FittedBox(
-                                          child: Image.asset(
-                                            selectedImage!.url.toString(),
-                                            fit: BoxFit.cover,
-                                            errorBuilder:
-                                                (context, error, stackTrace) {
-                                              return Image.asset(
-                                                "assets/images/product_image_not_available.png",
-                                                fit: BoxFit.cover,
-                                              );
-                                            },
-                                          ),
-                                        ))
-                            ],
-                          ),
-                        ],
-                      ) : state.statusGerenciarComodos.isUpdating 
-                      ? Text("Atualizando") 
-                    : state.statusGerenciarComodos.isError
-                        ? const Text('Ainda não há comodos cadastrados')
-                        : const SizedBox();
-          },
-        );
+    bool _buildWhenComodo(
+        GerenciarComodoState previusState, GerenciarComodoState currentState) {
+      return currentState is GerenciarComodoInitialState ||
+          currentState is GerenciarComodoUpdatedState ||
+          currentState is GerenciarComodoErrorState ||
+          currentState is GerenciarComodoLoadingState;
+    }
+
+    Widget _builderComodo(_, GerenciarComodoState state) {
+      if (state is GerenciarComodoInitialState) {
+        return Card(
+            color: const Color.fromARGB(255, 235, 245, 235),
+            elevation: 2,
+            child: CadastrarImageContainer(
+              // constraints: constraints,
+              imageController: widget.selectedImageUrl,
+            ));
       }
-    );
+      if (state is GerenciarComodoUpdatedState) {
+        return LayoutBuilder(builder: (context, constraints) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // futura implementação: listar todos os eletrodomésticos em uma categoria
+              AdaptativeTextField(
+                  keyboardType: TextInputType.text,
+                  controller: widget.nomeComodo,
+                  label: 'Nome: '),
+
+              // implementar drop down com imagens fixas de eletrodomésticos
+              SizedBox(height: constraints.maxHeight * 0.02),
+              Row(
+                children: [
+                  Container(
+                    height: constraints.maxHeight * 0.2,
+                    width: constraints.maxWidth * 0.65,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: DropdownMenu(
+                          width: constraints.maxWidth * 0.6,
+                          initialSelection: ImagensComodos.plantaCasa,
+                          controller: widget.imageComodo,
+                          requestFocusOnTap: true,
+                          label: const Text('Cômodo'),
+                          onSelected: (ImagensComodos? url) {
+                            setState(() {
+                              selectedImage = url;
+                            });
+                          },
+                          dropdownMenuEntries: ImagensComodos.values
+                              .map<DropdownMenuEntry<ImagensComodos>>(
+                                  (ImagensComodos url) {
+                            return DropdownMenuEntry<ImagensComodos>(
+                              value: url,
+                              label: url.label,
+                              enabled: url.label != 'Selecionar imagem',
+                            );
+                          }).toList()),
+                    ),
+                  ),
+                  Container(
+                      height: constraints.maxHeight * 0.2,
+                      width: constraints.maxWidth * 0.02,
+                      margin: const EdgeInsets.only(right: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 1),
+                      ),
+                      alignment: Alignment.center,
+                      child: widget.imageComodo.text.isEmpty
+                          ? const Text('Informe a Url')
+                          : FittedBox(
+                              child: Image.asset(
+                                selectedImage!.url.toString(),
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    "assets/images/product_image_not_available.png",
+                                    fit: BoxFit.cover,
+                                  );
+                                },
+                              ),
+                            ))
+                ],
+              ),
+            ],
+          );
+        });
+      }
+      if (state is GerenciarComodoLoadingState) {
+        return const Text("Atualizando");
+      }
+      if (state is GerenciarComodoErrorState) {
+        return const Text('Ainda não há comodos cadastrados');
+      }
+      return Container();
+    }
+
+    return LayoutBuilder(
+        // "subir" esse widget para que o botão de concluir consiga pegar a informação correta
+        // na forma atual, o title controller vai vazio levando o imagewidget a cair no 'onError' e mostrar a imagem planta casa
+        builder: (context, constraints) {
+      return BlocBuilder<GerenciarComodoBloc, GerenciarComodoState>(
+        builder: _builderComodo,
+        buildWhen: _buildWhenComodo,
+      );
+    });
   }
 }

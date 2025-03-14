@@ -82,28 +82,54 @@ class _DragStayTargetTestState extends State<DragStayTargetTest> {
                             border: Border.all(color: Colors.black)),
                         height: 300,
                         width: double.infinity,
-                        child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 100,
-                            mainAxisExtent: 50,
-                            childAspectRatio: 3 / 2,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20,
-                          ),
-                          itemCount: containerCor.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              // maxRadius: 12,
-                              height: 50,
-                              width: 25,
-                              // radius: 12,
+                        child: Stack(children: [
+                          GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 100,
+                              mainAxisExtent: 50,
+                              childAspectRatio: 3 / 2,
+                              crossAxisSpacing: 20,
+                              mainAxisSpacing: 20,
+                            ),
+                            itemCount: containerCor.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                child: Positioned(
+                                  left: position.dx,
+                                  top: position.dy,
+                                  child: Draggable<Widget>(
+                                      maxSimultaneousDrags: 1,
+                                      onDragEnd: (details) =>
+                                          updatePosition(details.offset),
+                                          data: containerCor[index],
+                                      // data: <Widget>[
+                                      //   Container(
+                                      //     height: 50,
+                                      //     width: 50,
+                                      //     color: Colors.red,
+                                      //   ),
+                                      // ],
+                                      // os dados que vão ser levados
+                                      // data: Container(
+                                      //   height: 50,
+                                      //   width: 50,
+                                      //   color:const Color.fromARGB(255, 152, 68, 68),
+                                      // ),
 
-                              child: containerCor[index],
-                            );
-                            // return containerCor[index];
-                          },
-                        ),
+                                      // o que aparece sendo arrastado
+                                      feedback: containerCor[index],
+
+                                      // aparece no ludar do objeto inicial enquando feedback está sendo arrastado
+                                      childWhenDragging: containerCor[index],
+                                      // objeto inicial
+                                      child: containerCor[index]),
+                                ),
+                              );
+                              // return containerCor[index];
+                            },
+                          ),
+                        ]),
                       ),
                     ),
                     const SizedBox(
@@ -144,8 +170,9 @@ class _DragStayTargetTestState extends State<DragStayTargetTest> {
                       data: Container(
                         height: 50,
                         width: 50,
-                        child: Image.asset(
-                            ImagensEletrodomesticos.values[index].url.toString()),
+                        child: Image.asset(ImagensEletrodomesticos
+                            .values[index].url
+                            .toString()),
                       ),
                       // ImagensEletrodomesticos.values.map<ImagensEletrodomesticos>((ImagensEletrodomesticos image ) {
                       //                     return Image.asset(ImagensEletrodomesticos.url);
@@ -157,7 +184,8 @@ class _DragStayTargetTestState extends State<DragStayTargetTest> {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage(
-                              ImagensEletrodomesticos.values[index].url.toString(),
+                              ImagensEletrodomesticos.values[index].url
+                                  .toString(),
                             ),
                           ),
                         ),
@@ -170,7 +198,8 @@ class _DragStayTargetTestState extends State<DragStayTargetTest> {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage(
-                              ImagensEletrodomesticos.values[index].url.toString(),
+                              ImagensEletrodomesticos.values[index].url
+                                  .toString(),
                             ),
                             opacity: 1,
                           ),
@@ -180,8 +209,9 @@ class _DragStayTargetTestState extends State<DragStayTargetTest> {
                       child: Container(
                           height: 50,
                           width: 50,
-                          child: Image.asset(
-                              ImagensEletrodomesticos.values[index].url.toString())),
+                          child: Image.asset(ImagensEletrodomesticos
+                              .values[index].url
+                              .toString())),
                     ),
                   );
                 },
@@ -198,3 +228,14 @@ class _DragStayTargetTestState extends State<DragStayTargetTest> {
     );
   }
 }
+
+
+
+// Container(
+//                               // maxRadius: 12,
+//                               height: 50,
+//                               width: 25,
+//                               // radius: 12,
+
+//                               child: containerCor[index],
+//                             );

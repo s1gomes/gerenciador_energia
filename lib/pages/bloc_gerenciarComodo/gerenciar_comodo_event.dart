@@ -1,14 +1,11 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:gerenciamento_energia_bloc/pages/bloc_gerenciarComodo/gerenciar_comodo_state.dart';
-import 'package:gerenciamento_energia_bloc/shared/widgets/compartmentalization/containers/imageContainers/GerenciarImageContainer.dart';
 
 class GerenciarComodoBlocEvents extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class AlterStateInicial extends GerenciarComodoBlocEvents {
+class AlterStateShowImage extends GerenciarComodoBlocEvents {
   @override
   List<Object?> get props => [];
 }

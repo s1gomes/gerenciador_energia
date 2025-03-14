@@ -9,7 +9,7 @@ import 'package:gerenciamento_energia_bloc/pages/comodos/main_comodos_folder/com
 import 'package:gerenciamento_energia_bloc/pages/comodos/main_comodos_folder/main_comodos.dart';
 import 'package:gerenciamento_energia_bloc/shared/widgets/AppDrawer_widget.dart';
 import 'package:gerenciamento_energia_bloc/shared/widgets/adaptatives/adaptativeButton.dart';
-import 'package:gerenciamento_energia_bloc/shared/widgets/adaptatives/adaptativeTextField.dart';
+import 'package:gerenciamento_energia_bloc/shared/widgets/adaptatives/AdaptativeTextField.dart';
 import 'package:gerenciamento_energia_bloc/shared/widgets/compartmentalization/cards/eletrodomesticosCard.dart';
 import 'package:gerenciamento_energia_bloc/shared/widgets/compartmentalization/containers/imageContainers/GerenciarImageContainer.dart';
 import 'package:flutter/widgets.dart';
@@ -51,6 +51,136 @@ class _GerenciarComodosPageState extends State<GerenciarComodosPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool _buildWhenComodo(
+        GerenciarComodoState previusState, GerenciarComodoState currentState) {
+      return currentState is GerenciarComodoInitialState ||
+          currentState is GerenciarComodoShowImageState ||
+          currentState is GerenciarComodoUpdatedState ||
+          // currentState is GerenciarComodoEditingState ||
+          currentState is GerenciarComodoLoadingState ||
+          currentState is GerenciarComodoErrorState;
+    }
+
+    Widget _builderComodo(_, GerenciarComodoState state) {
+      if (state is GerenciarComodoShowImageState) {
+        return LayoutBuilder(builder: (context, constraints) {
+          return Card(
+              color: const Color.fromARGB(255, 235, 245, 235),
+              elevation: 1,
+              child: GerenciarImageContainer(
+                constraints: constraints,
+                imageUrl: imageUpdate ? selectedImage!.url : widget.comodoImageUrl,
+              ));
+        });
+      }
+
+      if (state is GerenciarComodoUpdatedState) {
+        imageUpdate = true;
+        return LayoutBuilder(builder: (context, constraints) {
+
+          return SizedBox(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // futura implementação: listar todos os eletrodomésticos em uma categoria
+                SizedBox(
+                  height: constraints.maxHeight * 0.2,
+                  child: AdaptativeTextField(
+                      keyboardType: TextInputType.text,
+                      controller: titleController,
+                      label: 'Nome: '),
+                ),
+
+                // implementar drop down com imagens fixas de eletrodomésticos
+                SizedBox(height: constraints.maxHeight * 0.02),
+                SizedBox(
+                  width: constraints.maxWidth,
+                  child: Row(
+                    children: [
+                      Container(
+                        height: constraints.maxHeight * 0.3,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: DropdownMenu(
+                              width: constraints.maxWidth * 0.6,
+                              initialSelection: ImagensComodos.plantaCasa,
+                              controller: imageUrlController,
+                              requestFocusOnTap: true,
+                              label: const Text('Cômodo'),
+                              onSelected: (ImagensComodos? url) {
+                                setState(() {
+                                  selectedImage = url;
+                                });
+                              },
+                              dropdownMenuEntries: ImagensComodos.values
+                                  .map<DropdownMenuEntry<ImagensComodos>>(
+                                      (ImagensComodos url) {
+                                return DropdownMenuEntry<ImagensComodos>(
+                                  value: url,
+                                  label: url.label,
+                                  enabled: url.label != 'Selecionar imagem',
+                                );
+                              }).toList()),
+                        ),
+                      ),
+                      SizedBox(
+                        width: constraints.maxWidth * 0.05,
+                      ),
+                      Container(
+                          height: constraints.maxHeight * 0.4,
+                          width: constraints.maxWidth * 0.35,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1),
+                          ),
+                          alignment: Alignment.center,
+                          child: imageUrlController.text.isEmpty
+                              ? const Text('Selecione uma imagem')
+                              : FittedBox(
+                                  child: Image.asset(
+                                    selectedImage!.url.toString(),
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset(
+                                        "assets/images/product_image_not_available.png",
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
+                                  ),
+                                )),
+                    ],
+                  ),
+                ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AdaptativeButton(
+                      label: 'Atualizar cômodo',
+                      onPressed: () {
+                        setState(() {
+                          nomeUpdate = true;
+                          context
+                              .read<GerenciarComodoBloc>()
+                              .add(AlterStateShowImage());
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
+      }
+      if (state is GerenciarComodoLoadingState) {
+        return const CircularProgressIndicator();
+      }
+      if (state is GerenciarComodoErrorState) {
+        return const Text('Ainda não há comodos cadastrados');
+      }
+      return Container();
+    }
+
     return LayoutBuilder(builder: (ctx, constraints) {
       return Scaffold(
           resizeToAvoidBottomInset: false,
@@ -70,39 +200,7 @@ class _GerenciarComodosPageState extends State<GerenciarComodosPage> {
                   child: RelayCardGerenciarComodos(
                     titleController: titleController.text,
                   )),
-              // Card(
-              //   elevation: 3,
-              //   child: Row(
-              //     mainAxisAlignrment: MainAxisAlignment.spaceEvenly,
-              //     children: [
-              //       SizedBox(
-              //         width: constraints.maxWidth * 0.03,
-              //       ),
-              //       Container(
-              //           height: constraints.maxHeight * 0.060,
-              //           width: constraints.maxWidth * 0.75,
-              //           child: Padding(
-              //               padding: const EdgeInsets.all(8.0),
-              //               child: Text(
-              //                 nomeUpdate
-              //                     ? "Editar cômodo ${titleController.text}"
-              //                     : "Editar cômodo ${widget.comodoNome}",
-              //                 style: const TextStyle(
-              //                   fontSize: 17,
-              //                 ),
-              //                 textAlign: TextAlign.center,
-              //               ))),
-              //       IconButton(
-              //         onPressed: () {
-              //           setState(() {
-              //             hasComodo = false;
-              //           });
-              //         },
-              //         icon: const Icon(Icons.edit),
-              //       )
-              //     ],
-              //   ),
-              // ),
+
               SizedBox(
                 height: constraints.maxHeight * 0.28,
                 child: Padding(
@@ -112,153 +210,10 @@ class _GerenciarComodosPageState extends State<GerenciarComodosPage> {
                     bottom: 10,
                     top: 8,
                   ),
-                  child: BlocBuilder<GerenciarComodoBloc,
-                      GerenciarComodoBlocStates>(
-                    builder: (context, state) {
-                      return state.statusGerenciarComodos.isInitial
-                          ? Card(
-                              color: const Color.fromARGB(255, 235, 245, 235),
-                              elevation: 1,
-                              child: GerenciarImageContainer(
-                                constraints: constraints,
-                                imageUrl: widget.comodoImageUrl,
-                              ))
-                          : state.statusGerenciarComodos.isUpdated
-                              ? Card(
-                                  color:
-                                      const Color.fromARGB(255, 235, 245, 235),
-                                  elevation: 1,
-                                  child: GerenciarImageContainer(
-                                    constraints: constraints,
-                                    imageUrl: selectedImage!.url,
-                                  ))
-                              : state.statusGerenciarComodos.isEditing
-                                  ? Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        // futura implementação: listar todos os eletrodomésticos em uma categoria
-                                        adaptativeTextField(
-                                            keyboardType: TextInputType.text,
-                                            controller: titleController,
-                                            label: 'Nome: '),
-
-                                        // implementar drop down com imagens fixas de eletrodomésticos
-                                        SizedBox(
-                                            height:
-                                                constraints.maxHeight * 0.02),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              height:
-                                                  constraints.maxHeight * 0.10,
-                                              width:
-                                                  constraints.maxWidth * 0.65,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 20),
-                                                child: DropdownMenu(
-                                                    width:
-                                                        constraints.maxWidth *
-                                                            0.6,
-                                                    initialSelection:
-                                                        ImagensComodos
-                                                            .plantaCasa,
-                                                    controller:
-                                                        imageUrlController,
-                                                    requestFocusOnTap: true,
-                                                    label: const Text('Cômodo'),
-                                                    onSelected:
-                                                        (ImagensComodos? url) {
-                                                      setState(() {
-                                                        selectedImage = url;
-                                                      });
-                                                    },
-                                                    dropdownMenuEntries:
-                                                        ImagensComodos.values.map<
-                                                                DropdownMenuEntry<
-                                                                    ImagensComodos>>(
-                                                            (ImagensComodos
-                                                                url) {
-                                                      return DropdownMenuEntry<
-                                                          ImagensComodos>(
-                                                        value: url,
-                                                        label: url.label,
-                                                        enabled: url.label !=
-                                                            'Selecionar imagem',
-                                                      );
-                                                    }).toList()),
-                                              ),
-                                            ),
-                                            Container(
-                                                height: constraints.maxHeight *
-                                                    0.10,
-                                                width:
-                                                    constraints.maxWidth * 0.24,
-                                                margin: const EdgeInsets.only(
-                                                    right: 10),
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Colors.grey,
-                                                      width: 1),
-                                                ),
-                                                alignment: Alignment.center,
-                                                child: imageUrlController
-                                                        .text.isEmpty
-                                                    ? const Text(
-                                                        'Selecione uma imagem')
-                                                    : FittedBox(
-                                                        child: Image.asset(
-                                                          selectedImage!.url
-                                                              .toString(),
-                                                          fit: BoxFit.cover,
-                                                          errorBuilder:
-                                                              (context, error,
-                                                                  stackTrace) {
-                                                            return Image.asset(
-                                                              "assets/images/product_image_not_available.png",
-                                                              fit: BoxFit.cover,
-                                                            );
-                                                          },
-                                                        ),
-                                                      )),
-                                          ],
-                                        ),
-
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            AdaptativeButton(
-                                              label: 'Atualizar cômodo',
-                                              onPressed: () {
-                                                setState(() {
-                                                  nomeUpdate = true;
-                                                  context
-                                                      .read<
-                                                          GerenciarComodoBloc>()
-                                                      .add(AlterStateUpdated());
-                                                });
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    )
-                                  : state.statusGerenciarComodos.isUpdating
-                                      ? Text("Atualizando")
-                                      : state.statusGerenciarComodos.isError
-                                          ? const Text(
-                                              'Ainda não há comodos cadastrados')
-                                          : const SizedBox();
-                    },
+                  child: BlocBuilder<GerenciarComodoBloc, GerenciarComodoState>(
+                    builder: _builderComodo,
+                    buildWhen: _buildWhenComodo,
                   ),
-                  // child: RelayGerenciarComodos(
-                  //   imageComodo: imageController,
-                  //   nomeComodo: titleController,
-                  //   selectedImageUrl: imageController.text,
-                  // )
                 ),
               ),
 
@@ -273,30 +228,32 @@ class _GerenciarComodosPageState extends State<GerenciarComodosPage> {
                   AdaptativeButton(
                     label: 'Concluir',
                     onPressed: () async {
-                      await ComodoBancodeDados.instance
-                          .atualizarComodo(widget.comodoId,
-                              titleController.text, selectedImage!.url)
-                          .then(
-                        (value) {
-                          setState(() {
-                            hasComodo = true;
-                            nomeUpdate = true;
-                            imageUpdate = true;
-                          });
-                        },
-                      ).then((value) => Navigator.pop(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const MainComodosPage(),
-                              )));
-                      context.read<ComodoBloc>().add(GetComodos());
-                      // context
-                      //     .read<GerenciarComodoBloc>()
-                      //     .add(AlterStateInicial());
+                      if (titleController.text.isNotEmpty) {
+                        await ComodoBancodeDados.instance
+                            .atualizarComodo(widget.comodoId,
+                                titleController.text, selectedImage!.url)
+                            .then(
+                          (value) {
+                            setState(() {
+                              hasComodo = true;
+                              nomeUpdate = true;
+                              imageUpdate = true;
+                            });
+                          },
+                        ).then((value) => Navigator.pop(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MainComodosPage(),
+                                )));
+                        context.read<ComodoBloc>().add(const GetComodos());
+                      } else {
+                        Navigator.pop(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MainComodosPage(),
+                            ));
+                      }
                     },
-                    // onPressed: () {
-
-                    // },
                   ),
                 ],
               ),
@@ -305,65 +262,3 @@ class _GerenciarComodosPageState extends State<GerenciarComodosPage> {
     });
   }
 }
-
-
-/*
-
-
-AdaptativeButton(
-                                    label: 'Atualizar',
-                                    onPressed: () {
-                                      if (titleController.text.isNotEmpty ||
-                                          !hasBeenSaved) {
-                                        // LoginBancodeDados.instance
-                                        //     .recuperarTodos()
-                                        //     .then((value) async {
-                                        //   ELoginRepository.fazendoLogin(
-                                        //           usuarioController.text.toUpperCase(),
-                                        //           senha,
-                                        //           empresaSelecionada!.idEmpresa)
-                                        //       .then((usuario) async {
-                                        //     if (ELoginRepository.statusCode) {
-                                        //       setState(() {
-                                        //         errorText =
-                                        //             'Usuário ou Senha incorretos!';
-                                        //         loading = false;
-                                        //       });
-                                        //     }
-
-                                        // receber id do comodo
-                                        // ComodoBancodeDados.instance
-                                        //     .recuperarTodos()
-                                        //     .then((all) {
-                                        //       int comodoId = all.where((e) => e['idComodo']);
-
-                                          ComodoBancodeDados.instance
-                                              .atualizarComodo(
-                                                  comodoId,
-                                                  titleController.text,
-                                                  selectedImage!.url)
-                                              .then(
-                                            (value) {
-                                              setState(() {
-                                                context
-                                                    .read<ComodoBloc>()
-                                                    .add(GetComodos());
-
-                                                titleController.clear();
-                                                hasComodo = true;
-                                                hasBeenSaved = true;
-                                              });
-                                            },
-                                          );
-                                          Navigator.pop(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const MainComodosPage(),
-                                              ));
-                                        // });
-                                      }
-                                    },
-                                  )
-*/
-

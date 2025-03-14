@@ -1,39 +1,56 @@
 import 'package:equatable/equatable.dart';
 
-enum ComodosStatusS {
-  initial,
-  success,
-  error,
-  loading,
-  updated,
-  created
+// enum ComodosStatusS {
+//   initial,
+//   success,
+//   error,
+//   loading,
+//   updated,
+//   created
+// }
+
+// extension ComodosStatusX on ComodosStatusS {
+//   bool get isInitial => this == ComodosStatusS.initial;
+//   bool get isSuccess => this == ComodosStatusS.success;
+//   bool get isError => this == ComodosStatusS.error;
+//   bool get isLoading => this == ComodosStatusS.loading;
+//   bool get isUpdated => this == ComodosStatusS.updated;
+//   bool get isCreated => this == ComodosStatusS.created;
+// }
+sealed class ComodosStates extends Equatable {
+  const ComodosStates();
+  @override
+  List<Object> get props => [];
 }
 
-extension ComodosStatusX on ComodosStatusS {
-  bool get isInitial => this == ComodosStatusS.initial;
-  bool get isSuccess => this == ComodosStatusS.success;
-  bool get isError => this == ComodosStatusS.error;
-  bool get isLoading => this == ComodosStatusS.loading;
-  bool get isUpdated => this == ComodosStatusS.updated;
-  bool get isCreated => this == ComodosStatusS.created;
+class ComodosInitialState extends ComodosStates {
+  const ComodosInitialState();
 }
 
-class ComodoStates extends Equatable {
-   ComodoStates(
-      {this.statusComodos = ComodosStatusS.initial, List? allComodos})
-      : allComodos = allComodos ?? [];
+class ComodosLoadingState extends ComodosStates {
+  const ComodosLoadingState();
+}
 
-  final ComodosStatusS statusComodos;
+class ComodoSuccessState extends ComodosStates {
+  // final ComodosStatusS statusComodos;
   final List allComodos;
+  const ComodoSuccessState({required this.allComodos});
 
   @override
-  List<Object?> get props => [statusComodos, allComodos];
+  List<Object> get props => [allComodos];
 
-  ComodoStates copyWith({ComodosStatusS? statusComodos, List? allComodos}) {
-    return ComodoStates(
-      statusComodos: statusComodos ?? this.statusComodos,
+  ComodoSuccessState copyWith({List? allComodos}) {
+    return ComodoSuccessState(
       allComodos: allComodos ?? this.allComodos,
-
     );
   }
+}
+
+class ComodoErrorState extends ComodosStates {
+  final String message;
+  const ComodoErrorState({required this.message});
+}
+
+class ComodoEmptyListState extends ComodosStates {
+  const ComodoEmptyListState();
 }

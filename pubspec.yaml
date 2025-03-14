@@ -66,6 +66,7 @@ flutter:
   assets:
   - assets/images/
   - assets/google_fonts/
+  - assets/images/eletrodomesticos/
 
   uses-material-design: true
 

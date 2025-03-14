@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class adaptativeTextField extends StatelessWidget {
-  const adaptativeTextField({super.key, required this.controller, required this.label, required this.keyboardType});
+class AdaptativeTextField extends StatelessWidget {
+  const AdaptativeTextField({super.key, required this.controller, required this.label, required this.keyboardType});
   final TextEditingController controller;
   final TextInputType keyboardType;
   // final Function(String) onSubmitted;

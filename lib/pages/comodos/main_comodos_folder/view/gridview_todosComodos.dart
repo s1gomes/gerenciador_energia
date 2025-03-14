@@ -6,6 +6,8 @@ import 'package:gerenciamento_energia_bloc/data/db/db.dart';
 import 'package:gerenciamento_energia_bloc/pages/bloc_comodos/comodo_bloc.dart';
 import 'package:gerenciamento_energia_bloc/pages/bloc_comodos/comodo_event.dart';
 import 'package:gerenciamento_energia_bloc/pages/bloc_comodos/comodo_state.dart';
+import 'package:gerenciamento_energia_bloc/pages/bloc_gerenciarComodo/gerenciar_comodo_bloc.dart';
+import 'package:gerenciamento_energia_bloc/pages/bloc_gerenciarComodo/gerenciar_comodo_event.dart';
 import 'package:gerenciamento_energia_bloc/pages/comodos/main_comodos_folder/components/gerenciarComodos.dart';
 
 enum FilterOptions { Deletar, Editar }
@@ -27,6 +29,7 @@ class _GridviewTodosComodosState extends State<GridviewTodosComodos> {
     comodoNome,
     comodoId,
   ) {
+    context.read<GerenciarComodoBloc>().add(AlterStateShowImage());
     Navigator.push(
       context,
       MaterialPageRoute(

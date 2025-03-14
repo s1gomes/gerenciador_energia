@@ -13,28 +13,41 @@ class ComodosGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ComodoBloc, ComodoStates>(
-      builder: (context, state) {
-        return state.statusComodos.isInitial
-            ? const Text(
-                "Cadastre um cômodo.",
-                style: TextStyle(color: Colors.black, fontSize: 18),
-              )
-            : state.statusComodos.isSuccess
-                ? GridviewTodosComodos(
-                    constraints: constraints,
-                    dados: state.allComodos,
-                  )
-                : state.statusComodos.isLoading
-                    ? const Center(
-                        child: SizedBox(
-                            height: 100,
-                            width: 100,
-                            child: CircularProgressIndicator()))
-                    : state.statusComodos.isError
-                        ? const Text('Ainda não há comodos cadastrados.')
-                        : const SizedBox();
-      },
-    );
+    bool _buildWhenComodo(
+        ComodosStates previusState, ComodosStates currentState) {
+      return currentState is ComodosInitialState ||
+          currentState is ComodosInitialState ||
+          currentState is ComodosLoadingState ||
+          currentState is ComodoSuccessState ||
+          currentState is ComodoErrorState ||
+          currentState is ComodoEmptyListState;
+    }
+
+    Widget _builderComodo(_, ComodosStates state) {
+      if (state is ComodosInitialState) {
+        return const Text(
+          "Cadastre um cômodo.",
+          style: TextStyle(color: Colors.black, fontSize: 18),
+        );
+      }
+      if (state is ComodoSuccessState) {
+        return GridviewTodosComodos(
+          constraints: constraints,
+          dados: state.allComodos,
+        );
+      }
+      if (state is ComodosLoadingState) {
+        return const Center(
+            child: SizedBox(
+                height: 100, width: 100, child: CircularProgressIndicator()));
+      }
+      if (state is ComodoErrorState) {
+        return const Text('Ainda não há comodos cadastrados.');
+      }
+      return const SizedBox();
+    }
+
+    return BlocBuilder<ComodoBloc, ComodosStates>(
+        builder: _builderComodo, buildWhen: _buildWhenComodo);
   }
 }
