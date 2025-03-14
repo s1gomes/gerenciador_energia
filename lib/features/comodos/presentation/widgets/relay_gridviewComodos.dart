@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gerenciamento_energia_bloc/pages/bloc_comodos/comodo_bloc.dart';
-import 'package:gerenciamento_energia_bloc/pages/bloc_comodos/comodo_state.dart';
-import 'package:gerenciamento_energia_bloc/pages/comodos/main_comodos_folder/view/gridview_todosComodos.dart';
+
+import '../bloc/bloc_comodos/comodo_bloc.dart';
+import '../bloc/bloc_comodos/comodo_state.dart';
+import 'gridview_todosComodos.dart';
 
 class ComodosGridView extends StatelessWidget {
   const ComodosGridView({

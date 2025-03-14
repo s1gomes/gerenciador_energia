@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gerenciamento_energia_bloc/pages/comodos/main_comodos_folder/components/comodosCardMP.dart';
-import 'package:gerenciamento_energia_bloc/pages/comodos/main_comodos_folder/components/eletrodomesticosUsadosCardMP.dart';
-import 'package:gerenciamento_energia_bloc/pages/comodos/main_comodos_folder/view/relay_gridviewComodos.dart';
+import 'package:gerenciamento_energia_bloc/features/comodos/presentation/bloc/cadastrar_comodo_bloc/comodosCardMP.dart';
 import 'package:gerenciamento_energia_bloc/shared/widgets/AppDrawer_widget.dart';
-import 'package:gerenciamento_energia_bloc/shared/widgets/adaptatives/adaptativeButton.dart';
-import 'package:gerenciamento_energia_bloc/test/draggable_test.dart';
+
+import '../../bloc/cadastrar_comodo_bloc/eletrodomesticosUsadosCardMP.dart';
+import '../../widgets/relay_gridviewComodos.dart';
 
 class MainComodosPage extends StatefulWidget {
   const MainComodosPage({super.key});

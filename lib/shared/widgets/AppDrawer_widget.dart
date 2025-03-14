@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gerenciamento_energia_bloc/pages/comodos/main_comodos_folder/main_comodos.dart';
+import 'package:gerenciamento_energia_bloc/features/comodos/presentation/pages/home/main_comodos.dart';
 
 class AppDrawerWidget extends StatelessWidget {
   const AppDrawerWidget({super.key});

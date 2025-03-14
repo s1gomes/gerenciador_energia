@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gerenciamento_energia_bloc/data/db/db.dart';
-import 'package:gerenciamento_energia_bloc/pages/bloc_comodos/comodo_bloc.dart';
-import 'package:gerenciamento_energia_bloc/pages/bloc_comodos/comodo_event.dart';
-import 'package:gerenciamento_energia_bloc/pages/comodos/main_comodos_folder/main_comodos.dart';
-import 'package:gerenciamento_energia_bloc/shared/widgets/adaptatives/adaptativeButton.dart';
-import 'package:gerenciamento_energia_bloc/test/dragAndStayTest.dart';
-import 'package:gerenciamento_energia_bloc/test/dragandStayWithTarget.dart';
-import 'package:gerenciamento_energia_bloc/test/draggable_test.dart';
+import 'package:gerenciamento_energia_bloc/features/comodos/presentation/pages/home/main_comodos.dart';
+import '../../../../../comodos/presentation/bloc/bloc_comodos/comodo_bloc.dart';
+import '../../../../../comodos/presentation/bloc/bloc_comodos/comodo_event.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -23,6 +18,20 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 213, 212, 209),
+      appBar: AppBar(
+        title: Text("Comodos"),
+        // leading: IconButton(onPressed: () {
+        //
+        // }, icon: const Icon(
+        //   Icons.arrow_back,
+        //   color: Colors.black,
+        // ),
+        // ),
+        actions: [
+
+        ],
+      ),
+
       body: Column(
         children: [
           Container(
@@ -88,33 +97,33 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                   AdaptativeButton(
-                  label: "Draggable",
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const DraggableTest(),
-                        ));
-                  }),
-                   AdaptativeButton(
-                  label: "DragStayTest",
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const DragStayTest(),
-                        ));
-                  }),
-                   AdaptativeButton(
-                  label: "DragStayTargetTest",
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const DragStayTargetTest(),
-                        ));
-                  })
+                  //  AdaptativeButton(
+                  // label: "Draggable",
+                  // onPressed: () {
+                  //   Navigator.pushReplacement(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => const DraggableTest(),
+                  //       ));
+                  // }),
+                  //  AdaptativeButton(
+                  // label: "DragStayTest",
+                  // onPressed: () {
+                  //   Navigator.pushReplacement(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => const DragStayTest(),
+                  //       ));
+                  // }),
+                  //  AdaptativeButton(
+                  // label: "DragStayTargetTest",
+                  // onPressed: () {
+                  //   Navigator.pushReplacement(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => const DragStayTargetTest(),
+                  //       ));
+                  // })
 
                 ],
               ),

@@ -1,14 +1,11 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gerenciamento_energia_bloc/data/db/db.dart';
-import 'package:gerenciamento_energia_bloc/pages/bloc_comodos/comodo_bloc.dart';
-import 'package:gerenciamento_energia_bloc/pages/bloc_comodos/comodo_event.dart';
-import 'package:gerenciamento_energia_bloc/pages/bloc_comodos/comodo_state.dart';
-import 'package:gerenciamento_energia_bloc/pages/bloc_gerenciarComodo/gerenciar_comodo_bloc.dart';
-import 'package:gerenciamento_energia_bloc/pages/bloc_gerenciarComodo/gerenciar_comodo_event.dart';
-import 'package:gerenciamento_energia_bloc/pages/comodos/main_comodos_folder/components/gerenciarComodos.dart';
+import 'package:gerenciamento_energia_bloc/features/comodos/presentation/bloc/bloc_gerenciarComodo/gerenciar_comodo_bloc.dart';
+import 'package:gerenciamento_energia_bloc/features/comodos/presentation/bloc/cadastrar_comodo_bloc/gerenciarComodos.dart';
+import '../bloc/bloc_comodos/comodo_bloc.dart';
+import '../bloc/bloc_comodos/comodo_event.dart';
+import '../bloc/bloc_gerenciarComodo/gerenciar_comodo_event.dart';
 
 enum FilterOptions { Deletar, Editar }
 
@@ -86,7 +83,7 @@ class _GridviewTodosComodosState extends State<GridviewTodosComodos> {
                       },
                       fit: BoxFit.fill,
                       colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.4), BlendMode.dstATop),
+                          Colors.black.withValues(alpha: 0.4), BlendMode.dstATop),
                     ),
                     borderRadius: BorderRadius.circular(15),
                     gradient: LinearGradient(colors: [

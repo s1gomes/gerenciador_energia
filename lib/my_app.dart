@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gerenciamento_energia_bloc/data/db/db.dart';
-import 'package:gerenciamento_energia_bloc/login/login_page.dart';
-import 'package:gerenciamento_energia_bloc/pages/bloc_comodos/comodo_bloc.dart';
-import 'package:gerenciamento_energia_bloc/pages/bloc_gerenciarComodo/gerenciar_comodo_bloc.dart';
+import 'package:gerenciamento_energia_bloc/features/auth/login/presentation/pages/home/login_page.dart';
+import 'package:gerenciamento_energia_bloc/features/comodos/presentation/bloc/bloc_gerenciarComodo/gerenciar_comodo_bloc.dart';
+
+import 'features/comodos/presentation/bloc/bloc_comodos/comodo_bloc.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -25,11 +26,8 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-//  RepositoryProvider(
-//         create: (context) => ComodoBancodeDados.instance,
-
 class _MyAppState extends State<MyApp> {
-  // List<Comodos> todosComodos = comodosCategorias;
+
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
@@ -56,7 +54,7 @@ class _MyAppState extends State<MyApp> {
               colorScheme: ColorScheme.fromSeed(
                 error: Colors.red,
                 seedColor: const Color.fromARGB(255, 213, 227, 210),
-                background: const Color.fromARGB(255, 242, 247, 241),
+                surface: const Color.fromARGB(255, 242, 247, 241),
               ),
               useMaterial3: true,
               textTheme: ThemeData.light().textTheme.copyWith(

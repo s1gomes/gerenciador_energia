@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+
+import 'package:flutter/cupertino.dart';
 import 'package:gerenciamento_energia_bloc/my_app.dart';
 
-void main() {
+Future<void> main() async {
   runApp(const MyApp());
 }

@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gerenciamento_energia_bloc/data/db/db.dart';
-import 'package:gerenciamento_energia_bloc/pages/bloc_comodos/comodo_event.dart';
-import 'package:gerenciamento_energia_bloc/pages/bloc_comodos/comodo_state.dart';
+
+import 'comodo_event.dart';
+import 'comodo_state.dart';
+
 
 class ComodoBloc extends Bloc<ComodoEvents, ComodosStates> {
   // @override
