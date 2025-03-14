@@ -12,6 +12,7 @@ class NavigationExample extends StatefulWidget {
 class _NavigationExampleState extends State<NavigationExample> {
   int currentPageIndex = 0;
 
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
