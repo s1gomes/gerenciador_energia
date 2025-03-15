@@ -5,6 +5,7 @@ import 'package:gerenciamento_energia_bloc/features/auth/login/presentation/page
 import 'package:gerenciamento_energia_bloc/features/comodos/presentation/bloc/bloc_gerenciarComodo/gerenciar_comodo_bloc.dart';
 
 import 'features/comodos/presentation/bloc/bloc_comodos/comodo_bloc.dart';
+import 'features/mainpage/presentation/pages/home/main_page.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -45,7 +46,7 @@ class _MyAppState extends State<MyApp> {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: const LoginPage(),
+          home: const MainPage(),
           title: 'Gerenciador de energia',
           theme: ThemeData(
               primarySwatch: MyApp.green,

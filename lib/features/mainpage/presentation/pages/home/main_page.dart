@@ -2,6 +2,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../comodos/presentation/pages/home/main_comodos.dart';
+import '../../../../eletrodomesticos/presentation/pages/home/eletrodomesticos_page.dart';
+import '../../../../estatisticas/presentation/pages/estatistica_page.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -44,9 +48,9 @@ class _MainPageState extends State<MainPage> {
       body:
       <Widget>[
 
-        MainComodosPage()
-        EletrodomesticosPage()
-        EstatisticaPage()
+        const MainComodosPage(),
+        const EletrodomesticosPage(),
+        const EstatisticaPage(),
 
       ][currentPageIndex],
     );
