@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gerenciamento_energia_bloc/features/eletrodomesticos/data/models/EletrodomesticoModel.dart';
 
 import '../../../../../shared/widgets/AppDrawer_widget.dart';
 
@@ -13,6 +14,12 @@ class EletrodomesticosPage extends StatefulWidget {
 }
 
 class _EletrodomesticosPageState extends State<EletrodomesticosPage> {
+
+  Future getEletrodomesticos() async {
+    List<EletrodomesticoModel> eletrodomesticos = await allEletrodomesticos();
+    return eletrodomesticos;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +28,8 @@ class _EletrodomesticosPageState extends State<EletrodomesticosPage> {
         title: const Text("Eletrodomésticos"),
       ),
       drawer: const AppDrawerWidget(),
-      body: FutureBuilder(future:  ,
+      body: FutureBuilder(
+          future: getEletrodomesticos(),
           builder: (context, snapshot) {
           Row(
             children: [

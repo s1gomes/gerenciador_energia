@@ -30,8 +30,7 @@ class _MainComodosPageState extends State<MainComodosPage> {
               ComodosGridView(
                 constraints: constraints,
               ),
-              EletrodomesticosMaisUsadosCard(constraints: constraints),
-             
+              EletrodomesticosMaisUsadosCard(constraints: constraints)
             ],
           ),
         );
