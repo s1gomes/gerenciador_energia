@@ -6,13 +6,37 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+// class ItemProvider with ChangeNotifier{
+  // WidgetsFlutterBinding.ensureInitialized();
 
+class EletroDatabaseHelper {
+
+  static EletroDatabaseHelper? _eletroDatabaseHelper;
+  static Database? _database;
+  String eletrodomesticoTable = 'eletrodomesticoTable';
+  String id = 'id';
+  String name = 'name';
+  String wattshora = 'wattshora';
+  String consumoDeclarado = 'consumoDeclarado';
+  String consumoEstimado = 'consumoEstimado';
+
+  EletroDatabaseHelper._createInstance();
+
+  factory EletroDatabaseHelper() {
+    if (_eletroDatabaseHelper == null) {
+      _eletroDatabaseHelper = EletroDatabaseHelper._createInstance();
+    }
+    return _eletroDatabaseHelper!;
+  }
   final database = openDatabase(
     join(await getDatabasesPath(), 'eletrodomesticos_database.db'),
     onCreate: (db, version) {
-      return db.execute('CREATE TABLE eletrodomesticos(id INTEGER PRIMARY KEY, name TEXT, voltagem TEXT, wattshora TEXT, consumoDeclarado TEXT, consumoEstimado TEXT)',
+      return db.execute('CREATE TABLE eletrodomesticos('
+      'id INTEGER PRIMARY KEY, '
+      'name TEXT, voltagem TEXT, '
+      'wattshora TEXT, '
+      'consumoDeclarado TEXT, '
+      'consumoEstimado TEXT)',
       );
     },
     version: 1
