@@ -16,7 +16,7 @@ class EletrodomesticosPage extends StatefulWidget {
 class _EletrodomesticosPageState extends State<EletrodomesticosPage> {
 
   Future getEletrodomesticos() async {
-    List<EletrodomesticoModel> eletrodomesticos = await allEletrodomesticos();
+    List<EletrodomesticoModel> eletrodomesticos = await getAllEletrodomesticos();
     return eletrodomesticos;
   }
 
