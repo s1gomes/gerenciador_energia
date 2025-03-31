@@ -19,7 +19,7 @@ class _EstatisticaPageState extends State<EstatisticaPage> {
         backgroundColor: Colors.green,
         title: const Text("Estatística"),
       ),
-      drawer: const AppDrawerWidget(),
+      // drawer: const AppDrawerWidget(),
 
     );
 

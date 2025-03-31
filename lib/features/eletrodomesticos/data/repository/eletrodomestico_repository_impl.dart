@@ -1,21 +1,27 @@
 
 
 
-import 'package:gerenciamento_energia_bloc/features/eletrodomesticos/data/data_sources/remote/EletrodomesticoDatabaseHelper.dart';
+import 'package:gerenciamento_energia_bloc/features/eletrodomesticos/data/data_sources/database/EletrodomesticoDatabaseHelper.dart';
+import 'package:gerenciamento_energia_bloc/features/eletrodomesticos/domain/repository/eletro_repository.dart';
 
 import '../models/EletrodomesticoModel.dart';
 
-class  EletrodomesticoRepository {
+class EletrodomesticoRepositoryImpl extends EletrodomesticoRepository {
 
   final EletroDatabaseHelper eletroDatabaseHelper = EletroDatabaseHelper();
 
-  Future<List<Map<String, dynamic>>> getAllEletrodomesticos(
+  // EletrodomesticoRepositoryImpl(
+  //     this.eletroDatabaseHelper
+  // );
+
+  @override
+  Future<List<Map<String, dynamic>>> getEletrodomestico(
       int id
       ) async {
     var eletrodomesticos;
     print("eletrodomesticos $eletrodomesticos");
     try {
-      eletrodomesticos = eletroDatabaseHelper.getAllEletrodomesticos(id);
+      eletrodomesticos = eletroDatabaseHelper.getEletrodomestico(id);
       print("all eletrodomesticos $eletrodomesticos");
     } catch ( exception ){
       print(exception.toString());
@@ -23,6 +29,20 @@ class  EletrodomesticoRepository {
     return eletrodomesticos;
   }
 
+  @override
+  Future<List<Map<String, dynamic>>> getAllEletrodomesticos() async {
+    var eletrodomesticos;
+    print("eletrodomesticos $eletrodomesticos");
+    try {
+      eletrodomesticos = eletroDatabaseHelper.getAllEletrodomesticos();
+      print("all eletrodomesticos $eletrodomesticos");
+    } catch ( exception ){
+      print(exception.toString());
+    }
+    return eletrodomesticos;
+  }
+
+  @override
   Future<int> insertEletro(
       EletrodomesticoModel eletro
       ) async {
@@ -37,6 +57,7 @@ class  EletrodomesticoRepository {
     return eletrodomesticos;
   }
 
+  @override
   Future<int> updateEletro(
       EletrodomesticoModel eletro
       ) async {
@@ -51,6 +72,7 @@ class  EletrodomesticoRepository {
     return eletrodomesticos;
   }
 
+  @override
   Future<int> deleteEletro(
       int id
       ) async {

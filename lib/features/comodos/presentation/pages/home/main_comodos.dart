@@ -22,7 +22,7 @@ class _MainComodosPageState extends State<MainComodosPage> {
             backgroundColor: Colors.green,
             title: const Text("Comodos"),
           ),
-          drawer: const AppDrawerWidget(),
+          // drawer: const AppDrawerWidget(),
           body: Column(
             children: [
               ComodosCardMP(constraints: constraints),

@@ -51,18 +51,18 @@ class EletroDatabaseHelper {
 
   // Crud
 
-  // Future<EletrodomesticoModel> getEletrodomestico(int id) async {
-  //   Database db = await this.database;
-  //   var eletrodomesticos = await db.rawQuery(
-  //       'SELECT * FROM $eletrodomesticoTable WHERE $id = \'$id\' '
-  //   );
-  //   return eletrodomesticos;
-  // }
-
-  Future<List<Map<String, dynamic>>> getAllEletrodomesticos(int id) async {
+  Future<List<Map<String, dynamic>>> getEletrodomestico(int id) async {
     Database db = await this.database;
     var eletrodomesticos = await db.rawQuery(
         'SELECT * FROM $eletrodomesticoTable WHERE $id = \'$id\' '
+    );
+    return eletrodomesticos;
+  }
+
+  Future<List<Map<String, dynamic>>> getAllEletrodomesticos() async {
+    Database db = await this.database;
+    var eletrodomesticos = await db.rawQuery(
+        'SELECT * FROM $eletrodomesticoTable'
     );
     return eletrodomesticos;
   }

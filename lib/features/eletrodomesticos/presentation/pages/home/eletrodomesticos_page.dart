@@ -1,9 +1,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gerenciamento_energia_bloc/features/eletrodomesticos/data/models/EletrodomesticoModel.dart';
-
 import '../../../../../shared/widgets/AppDrawer_widget.dart';
+import '../../../data/data_sources/database/EletrodomesticoDatabaseHelper.dart';
 
 
 class EletrodomesticosPage extends StatefulWidget {
@@ -15,29 +14,39 @@ class EletrodomesticosPage extends StatefulWidget {
 
 class _EletrodomesticosPageState extends State<EletrodomesticosPage> {
 
-  Future getEletrodomesticos() async {
-    List<EletrodomesticoModel> eletrodomesticos = await getAllEletrodomesticos();
-    return eletrodomesticos;
+  var database;
+
+  @override
+  void initState() {
+    database = EletroDatabaseHelper().getAllEletrodomesticos();
+    // Call event to get ny times article
+
+    super.initState();
   }
+  // Future getEletrodomesticos() async {
+  //   List<EletrodomesticoModel> eletrodomesticos = await getAllEletrodomesticos();
+  //   return eletrodomesticos;
+  // }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar:  AppBar(
         backgroundColor: Colors.green,
         title: const Text("Eletrodomésticos"),
       ),
-      drawer: const AppDrawerWidget(),
+      // drawer: const AppDrawerWidget(),
       body: FutureBuilder(
-          future: getEletrodomesticos(),
+          future: database,
           builder: (context, snapshot) {
           Row(
             children: [
-              Text('Adicionar eletrodoméstico'),
+              const Text('Adicionar eletrodoméstico'),
               IconButton(
                   onPressed: () {
                     //navegar para pagina adicionar eletrodomestico
-                  }, icon: Icon(
+                  }, icon: const Icon(
                 Icons.add,
                 color: Colors.black,
               ))
@@ -45,19 +54,21 @@ class _EletrodomesticosPageState extends State<EletrodomesticosPage> {
           );
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: const CircularProgressIndicator(),
+          return const Center(
+            child: CircularProgressIndicator(),
 
           );
         } else if (snapshot.hasError){
+          print("${snapshot.hasError}");
           return Center(
             child: Row(
               children: [
                 Text('Error: ${snapshot.error}'),
+
                 IconButton(
                     onPressed: () {
                   //recall fetch function
-                }, icon: Icon(
+                }, icon: const Icon(
                     Icons.replay_sharp,
                   color: Colors.black,
                 ))
@@ -66,9 +77,9 @@ class _EletrodomesticosPageState extends State<EletrodomesticosPage> {
           );
         } else {
           return ListView.builder(
-              itemCount: itemProvider.items.length,
+              itemCount: database.items.length,
               itemBuilder: (context, index) {
-            final item = itemProvider.items[index];
+            final item = database.items[index];
 
             return ListTile(
               title: Text(item.name),
